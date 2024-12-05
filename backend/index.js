@@ -11,28 +11,28 @@ dontenv.config()
 const app = express()
 
 // Middleware
+
+app.use(cookieParser())
 app.use(express.json())
 mongodb()
 app.use(express.urlencoded({extended:true}))
+app.use(cors({
+    origin: 'http://localhost:5173', // Replace with your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+    credentials: true, // Include cookies, if needed
+  }));
 app.use('/',userRoute)
 app.use('/',todoRoute)
-app.use(cors())
-app.use(cookieParser())
 
-app.get('/',(req,res)=>{
-    res.send('Hello World!')
-})
+// OR Enable CORS for a specific origin
+
+
+
 
 const port = process.env.PORT || 7000
 
 app.listen(port,()=>{
     console.log(`Server is running on port ${port}`)
 })
-
-
-
-
-
-
 
 

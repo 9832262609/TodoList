@@ -8,9 +8,13 @@ app.use(cookieParser());
 
 export const  generateTokenAndSaveInCookies = async (userId,res)=>{
     const token = jwt.sign({userId}, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.cookie('token', token, { httpOnly: true, secure: false,
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Use secure cookies in production
         sameSite: "lax",
-        path: "/", });
+        path: "/",
+      });
+      
      await User.findByIdAndUpdate(userId,{token})
      return token;
 }
